@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/lg2026/schemas/LG_Step1_Schema_v1.1.json",
+  "title": "LG Step1 Schema v1.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project_id",
+    "region",
+    "city",
+    "climate_type",
+    "season",
+    "fixed",
+    "fashion_color",
+    "fashion_color_name",
+    "biometric_ids",
+    "ratio",
+    "aspect_ratio"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+)?$"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "region": {
+      "type": "string",
+      "minLength": 2
+    },
+    "city": {
+      "type": "string",
+      "minLength": 2
+    },
+    "climate_type": {
+      "type": "string",
+      "minLength": 2
+    },
+    "season": {
+      "type": "string",
+      "minLength": 2
+    },
+    "batch_n": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fixed": {
+      "type": "object",
+      "required": [
+        "ethnicity",
+        "age",
+        "gender",
+        "occupation"
+      ],
+      "properties": {
+        "ethnicity": {
+          "type": "string",
+          "minLength": 2
+        },
+        "age": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gender": {
+          "type": "string",
+          "minLength": 2
+        },
+        "occupation": {
+          "type": "string",
+          "minLength": 2
+        }
+      },
+      "additionalProperties": true
+    },
+    "interior_style": {
+      "type": "string"
+    },
+    "campaign_target": {
+      "type": "string"
+    },
+    "fashion_color": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "fashion_color_name": {
+      "type": "string",
+      "minLength": 2
+    },
+    "fashion_texture": {
+      "type": "string"
+    },
+    "biometric_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2
+      },
+      "minItems": 1
+    },
+    "ratio": {
+      "type": "string",
+      "minLength": 2
+    },
+    "aspect_ratio": {
+      "type": "string",
+      "pattern": "^\\d+:\\d+$"
+    },
+    "aspect_ratio_value": {
+      "type": "string",
+      "minLength": 4
+    },
+    "diversity_mode": {
+      "type": "string"
+    },
+    "cast_mode": {
+      "type": "string",
+      "enum": ["SINGLE", "MULTI", "SINGLE_MODEL_LOOKBOOK"]
+    },
+    "cast": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "age",
+          "gender",
+          "ethnicity",
+          "biometric_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 2
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "gender": {
+            "type": "string",
+            "minLength": 2
+          },
+          "ethnicity": {
+            "type": "string",
+            "minLength": 2
+          },
+          "biometric_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 2
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "relation_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "type"],
+        "properties": {
+          "from": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "cast_mode": {
+            "const": "MULTI"
+          }
+        },
+        "required": ["cast_mode"]
+      },
+      "then": {
+        "required": ["cast"],
+        "properties": {
+          "cast": {
+            "minItems": 2
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}
